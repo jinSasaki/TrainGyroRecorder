@@ -32,6 +32,20 @@ NSString *StringTrainStatus(TrainStatus status) {
     return statusString[status];
 }
 
+NSString *StringCurveStatus(CurveStatus status) {
+    NSArray *statusString = @[@"no Curve",
+                              @"Curving!",
+                              @"",
+                              @"",
+                              @"",
+                              @"",
+                              @"",
+                              @"",
+                              @"Error"];
+    return statusString[status];
+}
+
+
 NSArray *DataKeyLabels() {
     NSArray *keys = @[KEY_NAME,
                       

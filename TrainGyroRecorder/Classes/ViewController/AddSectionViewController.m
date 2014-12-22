@@ -11,7 +11,9 @@
 @interface AddSectionViewController ()
 {
     double time;
-    double speed;
+    
+    double averageV;
+    double velocity;
     
     // data
     NSMutableArray *pitchs;
@@ -42,6 +44,13 @@
 
 @implementation AddSectionViewController
 
+// frequency
+const int frequencyAttribute        = 10; // Hz
+const int frequencyAccelaration     = 10; // Hz
+
+// threshold
+const double threshold = 0.04;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -53,11 +62,17 @@
     self.motionManager = [[CMMotionManager alloc]init];
     
     
+    
+    // set frequency
+    self.motionManager.deviceMotionUpdateInterval = 1 / frequencyAttribute;
+    self.motionManager.accelerometerUpdateInterval = 1 / frequencyAccelaration;
+
     self.fromStationField.delegate = self;
     self.toStationField.delegate = self;
 
     [self.switchBtn setTitle:@"Start" forState:UIControlStateNormal];
-    self.switchBtn.layer.backgroundColor = [UIColor greenColor].CGColor;
+//    self.switchBtn.layer.backgroundColor = [UIColor greenColor].CGColor;
+    self.switchBtn.layer.borderColor = [UIColor greenColor].CGColor;
 
     [self prepareForRecording];
 }
@@ -67,20 +82,24 @@
     // init time
     time = 0;
 
-    // init speed
-    speed = 0;
+    // init params
+    velocity = 0;
+    averageV = 0;
+    
+    self.isCurving = NO;
+    self.curveLabel.text = StringCurveStatus(CurveStatusNoCurve);
 
-    // init status label
+    // reset status label
     self.statusLabel.text = StringRecordingStatus(RecordingStatusRecording);
     
-    // init time label
+    // reset time label
     self.timeLabel.text = [NSString stringWithFormat:@"%g",time];
 
-    // init trainStatus label
+    // reset trainStatus label
     self.trainStatusLabel.text = StringTrainStatus(TrainStatusStopping);
 
-    // init speed label
-    self.speedLabel.text = [NSString stringWithFormat:@"%g",speed];
+    // reset speed label
+    self.speedLabel.text = [NSString stringWithFormat:@"%g",velocity];
     
     
     // init Arrays
@@ -109,7 +128,8 @@
         // Stop--------------------------------
         
         [self.switchBtn setTitle:@"Start" forState:UIControlStateNormal];
-        self.switchBtn.layer.backgroundColor = [UIColor greenColor].CGColor;
+//        self.switchBtn.layer.backgroundColor = [UIColor greenColor].CGColor;
+        self.switchBtn.layer.borderColor = [UIColor greenColor].CGColor;
 
         // stop motion updates
         [self.motionManager stopDeviceMotionUpdates];
@@ -128,7 +148,8 @@
     // Start--------------------------------
 
     [self.switchBtn setTitle:@"Stop" forState:UIControlStateNormal];
-    self.switchBtn.layer.backgroundColor = [UIColor redColor].CGColor;
+//    self.switchBtn.layer.backgroundColor = [UIColor redColor].CGColor;
+    self.switchBtn.layer.borderColor = [UIColor redColor].CGColor;
     
     [self prepareForRecording];
     
@@ -155,9 +176,28 @@
              NSString * timestamp = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970] * 1000];
              [timestampsOfAttitude addObject:timestamp];
              
-             [curveFlags addObject:@(self.isCurving)];
-             
              self.timeLabel.text = [NSString stringWithFormat:@"%.2f",-[startDate timeIntervalSinceNow]];
+
+
+             if (timestampsOfAttitude.count >= 2) {
+      
+                 double dt = (timestamp.doubleValue - [timestampsOfAttitude[timestampsOfAttitude.count-2] doubleValue]) / 1000;
+                 
+                 double dYaw = motion.attitude.yaw - [yaws[yaws.count-2] doubleValue];
+                 
+                 double gradient = dYaw / dt;
+
+                 if (gradient > threshold) {
+                     self.isCurving = YES;
+                     self.curveLabel.text = StringCurveStatus(CurveStatusCurving);
+                 }else {
+                     self.isCurving = NO;
+                     self.curveLabel.text = StringCurveStatus(CurveStatusNoCurve);
+                 }
+                 
+             }
+             
+             [curveFlags addObject:@(self.isCurving)];
 
          }];
     }
@@ -173,7 +213,22 @@
              [zAccelerations addObject:@(data.acceleration.z)];
              NSString * timestamp = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970] * 1000];
              [timestampsOfAccelaration addObject:timestamp];
+             
 
+             if (timestampsOfAccelaration.count >= 2) {
+
+                 
+                 // 速度の計算
+                 double dt = (timestamp.doubleValue - [timestampsOfAccelaration[timestampsOfAccelaration.count-2] doubleValue])/1000;
+                 
+                 // 正面を向いている仮定
+                 averageV = (averageV * (yAccelerations.count-1) + data.acceleration.y) / yAccelerations.count;
+                 velocity = velocity + (data.acceleration.y - averageV) * dt * 10;
+                 
+                 // update speed label
+                 self.speedLabel.text = [NSString stringWithFormat:@"%.2f",velocity];
+
+             }
              
          }];
     }

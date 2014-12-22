@@ -208,6 +208,7 @@
                     <connections>
                         <outlet property="curveLabel" destination="RrF-j0-VNM" id="tU0-J8-cpK"/>
                         <outlet property="fromStationField" destination="7mK-xA-YCg" id="K0c-lY-jTB"/>
+                        <outlet property="speedLabel" destination="eUq-1H-l8w" id="u93-Ux-dgY"/>
                         <outlet property="statusLabel" destination="bcY-D7-WRj" id="SoR-eb-9b6"/>
                         <outlet property="switchBtn" destination="qnT-84-oVT" id="ZyY-Tu-RjD"/>
                         <outlet property="timeLabel" destination="8CI-Qc-xFW" id="8ij-zJ-qBJ"/>

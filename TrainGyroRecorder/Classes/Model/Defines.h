@@ -36,12 +36,18 @@ typedef NS_ENUM (NSInteger ,RecordingStatus){
     RecordingStatusError       = 9
 };
 typedef NS_ENUM (NSInteger ,TrainStatus){
-    TrainStatusStopping    = 0,
-    TrainStatusRunning     = 1,
-    TrainStatusError       = 9
+    TrainStatusStopping     = 0,
+    TrainStatusRunning      = 1,
+    TrainStatusError        = 9
+};
+typedef NS_ENUM (NSInteger ,CurveStatus){
+    CurveStatusNoCurve      = 0,
+    CurveStatusCurving      = 1,
+    CurveStatusError        = 9
 };
 
 NSString *StringRecordingStatus(RecordingStatus status);
 NSString *StringTrainStatus(TrainStatus status);
+NSString *StringCurveStatus(CurveStatus status);
 
 NSArray *DataKeyLabels();
