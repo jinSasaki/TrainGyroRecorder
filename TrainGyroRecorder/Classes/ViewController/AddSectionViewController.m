@@ -16,8 +16,8 @@
     double velocity;
     
     // frequency
-    double frequencyAttribute;
-    double frequencyAccelaration;
+    double deviceMotionFrequency;
+    double accelerometerFrequency;
     
     // threshold
     double threshold;
@@ -67,8 +67,8 @@
     NSArray *config = [ud arrayForKey:KEY_CONFIG];
     
     threshold = [config[0] doubleValue];
-    frequencyAccelaration = [config[1] doubleValue];
-    frequencyAttribute = [config[2] doubleValue];
+    accelerometerFrequency = [config[1] doubleValue];
+    deviceMotionFrequency = [config[2] doubleValue];
     
     // make circle buttons
     self.switchBtn.layer.cornerRadius = self.switchBtn.frame.size.height /2;
@@ -77,8 +77,8 @@
     self.motionManager = [[CMMotionManager alloc]init];
     
     // set frequency
-    self.motionManager.deviceMotionUpdateInterval = 1 / frequencyAttribute;
-    self.motionManager.accelerometerUpdateInterval = 1 / frequencyAccelaration;
+    self.motionManager.deviceMotionUpdateInterval = 1 / deviceMotionFrequency;
+    self.motionManager.accelerometerUpdateInterval = 1 / accelerometerFrequency;
     
     self.fromStationField.delegate = self;
     self.toStationField.delegate = self;

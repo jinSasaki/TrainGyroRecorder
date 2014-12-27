@@ -49,7 +49,7 @@
 - (BOOL)validateInputValues
 {
     NSInteger threshold = [[textfields[0] text] integerValue];
-    NSInteger accelometerFrequency = [[textfields[1] text] integerValue];
+    NSInteger accelerometerFrequency = [[textfields[1] text] integerValue];
     NSInteger devicemotionFrequency = [[textfields[2] text] integerValue];
     
     NSString *message;
@@ -59,11 +59,11 @@
         message = @"閾値は 0 < , < 10.0 である必要があります";
         flag = NO;
     }
-    if (devicemotionFrequency <= 0.0 || devicemotionFrequency > 100.0) {
+    if (accelerometerFrequency <= 0.0 || accelerometerFrequency > 100.0) {
         message = @"周波数は 0 < , < 100.0 である必要があります";
         flag = NO;
     }
-    if (accelometerFrequency <= 0.0 || accelometerFrequency > 100.0) {
+    if (devicemotionFrequency <= 0.0 || devicemotionFrequency > 100.0) {
         message = @"周波数は 0 < , < 100.0 である必要があります";
         flag = NO;
     }
