@@ -20,8 +20,8 @@
     double accelerometerFrequency;
     
     // threshold
-    double threshold;
-
+    double curveThreshold;
+    
     
     NSInteger carNum;
     
@@ -42,11 +42,14 @@
     NSMutableArray *zAccelerationsNonGravity;
     
     NSMutableArray *vectorSizes;
+    NSMutableArray *velocities;
     
     NSMutableArray *curveFlags;
     
+    NSMutableArray *trainStatuses;
+    
     NSString *name;
-
+    
     AVAudioPlayer *audio;
     
     UIActionSheet *actionSheet;
@@ -66,9 +69,9 @@
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     NSArray *config = [ud arrayForKey:KEY_CONFIG];
     
-    threshold = [config[0] doubleValue];
-    accelerometerFrequency = [config[1] doubleValue];
-    deviceMotionFrequency = [config[2] doubleValue];
+    curveThreshold          = [config[0] doubleValue];
+    accelerometerFrequency  = [config[1] doubleValue];
+    deviceMotionFrequency   = [config[2] doubleValue];
     
     // make circle buttons
     self.switchBtn.layer.cornerRadius = self.switchBtn.frame.size.height /2;
@@ -77,8 +80,8 @@
     self.motionManager = [[CMMotionManager alloc]init];
     
     // set frequency
-    self.motionManager.deviceMotionUpdateInterval = 1 / deviceMotionFrequency;
     self.motionManager.accelerometerUpdateInterval = 1 / accelerometerFrequency;
+    self.motionManager.deviceMotionUpdateInterval = 1 / deviceMotionFrequency;
     
     self.fromStationField.delegate = self;
     self.toStationField.delegate = self;
@@ -195,8 +198,10 @@
     zAccelerationsNonGravity  = [NSMutableArray array];
     
     curveFlags = [NSMutableArray array];
+    trainStatuses = [NSMutableArray array];
     
     vectorSizes = [NSMutableArray array];
+    velocities = [NSMutableArray array];
     
 }
 
@@ -238,7 +243,7 @@
         self.switchBtn.layer.borderColor = [UIColor greenColor].CGColor;
         [self.switchBtn setTitle:@"Start" forState:UIControlStateNormal];
         [self.switchBtn setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
-
+        
         [self stopRecording];
         
         return;
@@ -258,7 +263,7 @@
 - (void)startRecording {
     
     [audio play];
-
+    
     // create file name
     NSDateFormatter *df = [NSDateFormatter new];
     df.dateFormat = @"MMddHHmmss";
@@ -269,133 +274,162 @@
     
     NSDate *startDate = [NSDate date];
     
+    CMDeviceMotionHandler deviceMotionHandler = ^(CMDeviceMotion *motion, NSError *error) {
+        // add attitude data
+        [pitchs addObject:@(motion.attitude.pitch)];
+        [rolls addObject:@(motion.attitude.roll)];
+        [yaws addObject:@(motion.attitude.yaw)];
+        
+        // add timestamp
+        NSString * timestamp = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];
+        [timestampsOfAttitude addObject:timestamp];
+        
+        // update time label
+        self.timeLabel.text = [NSString stringWithFormat:@"%.2f",-[startDate timeIntervalSinceNow]];
+        
+        
+        // detect curve
+        if (timestampsOfAttitude.count >= 2) {
+            
+            double dt = (timestamp.doubleValue - [timestampsOfAttitude[timestampsOfAttitude.count-2] doubleValue]);
+            
+            double dYaw = motion.attitude.yaw - [yaws[yaws.count-2] doubleValue];
+            
+            double gradient = dYaw / dt;
+            
+            if (gradient > curveThreshold || gradient < -curveThreshold) {
+                self.isCurving = YES;
+                self.curveLabel.text = StringCurveStatus(CurveStatusCurving);
+            }else {
+                self.isCurving = NO;
+                self.curveLabel.text = StringCurveStatus(CurveStatusNoCurve);
+            }
+            
+        }
+        
+        [curveFlags addObject:@(self.isCurving)];
+
+    };
+    
+    CMAccelerometerHandler accelerometerHandler = ^(CMAccelerometerData *data, NSError *error)
+    {
+        
+        // add timestamp
+        NSString * timestamp = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];
+        [timestampsOfAccelaration addObject:timestamp];
+        
+        
+        // calc velocity
+        if (timestampsOfAccelaration.count > 1) {
+            
+            /**
+             * 加速度成分から重力成分を除去
+             * 正面向いているという仮定のもと
+             */
+            
+            // ローパスフィルタのフィルタ値
+            double alpha = 0.1;
+            
+            // 加速度成分をローパスフィルタに通し、重力成分をとる
+            double gx = data.acceleration.x * alpha + [xAccelerations[xAccelerations.count - 1] doubleValue] * (1.0 - alpha);
+            double gy = data.acceleration.y * alpha + [yAccelerations[yAccelerations.count - 1] doubleValue] * (1.0 - alpha);
+            double gz = data.acceleration.z * alpha + [zAccelerations[zAccelerations.count - 1] doubleValue] * (1.0 - alpha);
+            
+            // 重力成分を省いた加速度
+            double ax = data.acceleration.x - gx;
+            double ay = data.acceleration.y - gy;
+            double az = data.acceleration.z - gz;
+            
+            // 単位をm/sに
+            ax *= 10;
+            ay *= 10;
+            az *= 10;
+            
+            double vectorSize = 0;
+            double averageAY = 0;
+            NSInteger status = 0;
+            
+            if (xAccelerationsNonGravity.count > 0) {
+                
+                // 差分算出
+                double dx = ax - [xAccelerationsNonGravity[xAccelerationsNonGravity.count-1] doubleValue];
+                double dy = ay - [yAccelerationsNonGravity[yAccelerationsNonGravity.count-1] doubleValue];
+                double dz = az - [zAccelerationsNonGravity[zAccelerationsNonGravity.count-1] doubleValue];
+                
+                
+                // ベクトルの大きさ
+                vectorSize = sqrt(dx * dx + dy * dy + dz * dz);
+                
+                // y方向向きが負だったら ベクトルも負に
+                if (ay < 0.0) {
+                    vectorSize *= -1;
+                }
+                
+                
+                // TODO: 正面向いてる前提
+                vectorSize = ay;
+                
+                [vectorSizes addObject:@(vectorSize)];
+                
+                
+            }else {
+                [vectorSizes addObject:@(vectorSize)];
+            }
+            
+            // 配列に追加
+            [xAccelerationsNonGravity addObject:@(ax)];
+            [yAccelerationsNonGravity addObject:@(ay)];
+            [zAccelerationsNonGravity addObject:@(az)];
+            
+            /**
+             * 速度の計算
+             */
+            
+            double dt = (timestamp.doubleValue - [timestampsOfAccelaration[timestampsOfAccelaration.count - 2] doubleValue]);
+            
+            // velocity の単位は km/hのため変換
+            velocity = velocity + (vectorSize * 3600 / 1000) * dt;
+            [velocities addObject:@(velocity)];
+            
+            // update speed label
+            self.speedLabel.text = [NSString stringWithFormat:@"%.1f km/h",velocity];
+            
+            if (velocity < 0.5 ) {
+                status = TrainStatusStopping;
+            } else if (averageAY < -0.01 ) {
+                status = TrainStatusAccel;
+            } else if(averageAY > 0.01) {
+                status = TrainStatusDecel;
+            } else {
+                status = TrainStatusRunning;
+            }
+            
+            self.trainStatusLabel.text = StringTrainStatus(status);
+            
+            [trainStatuses addObject:@(status)];
+            
+        } else {
+            [trainStatuses addObject:@""];
+            [vectorSizes addObject:@""];
+            [velocities addObject:@""];
+        }
+        
+        [xAccelerations addObject:@(data.acceleration.x)];
+        [yAccelerations addObject:@(data.acceleration.y)];
+        [zAccelerations addObject:@(data.acceleration.z)];
+        
+    };
+    
+
+    
     // start motion updates
     [self.motionManager startDeviceMotionUpdatesToQueue:[NSOperationQueue currentQueue]
-                                            withHandler:^(CMDeviceMotion *motion, NSError *error)
-     {
-         
-         // add attitude data
-         [pitchs addObject:@(motion.attitude.pitch)];
-         [rolls addObject:@(motion.attitude.roll)];
-         [yaws addObject:@(motion.attitude.yaw)];
-         
-         // add timestamp
-         NSString * timestamp = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];
-         [timestampsOfAttitude addObject:timestamp];
-
-         // update time label
-         self.timeLabel.text = [NSString stringWithFormat:@"%.2f",-[startDate timeIntervalSinceNow]];
-         
-
-         // detect curve
-         if (timestampsOfAttitude.count >= 2) {
-             
-             double dt = (timestamp.doubleValue - [timestampsOfAttitude[timestampsOfAttitude.count-2] doubleValue]);
-             
-             double dYaw = motion.attitude.yaw - [yaws[yaws.count-2] doubleValue];
-             
-             double gradient = dYaw / dt;
-             
-             if (gradient > threshold || gradient < -threshold) {
-                 self.isCurving = YES;
-                 self.curveLabel.text = StringCurveStatus(CurveStatusCurving);
-             }else {
-                 self.isCurving = NO;
-                 self.curveLabel.text = StringCurveStatus(CurveStatusNoCurve);
-             }
-             
-         }
-         
-         [curveFlags addObject:@(self.isCurving)];
-         
-     }];
-    
+                                            withHandler:deviceMotionHandler];
     
     // start accelerometer
     [self.motionManager startAccelerometerUpdatesToQueue:[NSOperationQueue currentQueue]
-                                             withHandler:^(CMAccelerometerData *data, NSError *error)
-     {
-
-         // add timestamp
-         NSString * timestamp = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];
-         [timestampsOfAccelaration addObject:timestamp];
-         
-
-         // calc velocity
-         if (timestampsOfAccelaration.count > 1) {
-             
-             /**
-              * 加速度成分から重力成分を除去
-              * 正面向いているという仮定のもと
-              */
-             
-             // ローパスフィルタのフィルタ値
-             double alpha = 0.1;
-             
-             // 加速度成分をローパスフィルタに通し、重力成分をとる
-             double gx = data.acceleration.x * alpha + [xAccelerations[xAccelerations.count - 1] doubleValue] * (1.0 - alpha);
-             double gy = data.acceleration.y * alpha + [yAccelerations[yAccelerations.count - 1] doubleValue] * (1.0 - alpha);
-             double gz = data.acceleration.z * alpha + [zAccelerations[zAccelerations.count - 1] doubleValue] * (1.0 - alpha);
-             
-             // 重力成分を省いた加速度
-             double ax = data.acceleration.x - gx;
-             double ay = data.acceleration.y - gy;
-             double az = data.acceleration.z - gz;
-             
-             // 単位をm/sに
-             ax *= 10;
-             ay *= 10;
-             az *= 10;
-             
-             double vectorSize;
-             
-             if (xAccelerationsNonGravity.count > 0) {
-                 // 差分算出
-                 double dx = ax - [xAccelerationsNonGravity[xAccelerationsNonGravity.count-1] doubleValue];
-                 double dy = ay - [yAccelerationsNonGravity[yAccelerationsNonGravity.count-1] doubleValue];
-                 double dz = az - [zAccelerationsNonGravity[zAccelerationsNonGravity.count-1] doubleValue];
-                 
-                 
-                 // ベクトルの大きさ
-                 vectorSize = sqrt(dx * dx + dy * dy + dz * dz);
-                 
-                 // y方向向きが負だったら ベクトルも負に
-                 if (ay < 0.0) {
-                     vectorSize *= -1;
-                 }
-                 
-                 // TODO: 正面向いてる前提
-                 vectorSize = ay;
-
-                 [vectorSizes addObject:@(vectorSize)];
-             }
-             
-             // 配列に追加
-             [xAccelerationsNonGravity addObject:@(ax)];
-             [yAccelerationsNonGravity addObject:@(ay)];
-             [zAccelerationsNonGravity addObject:@(az)];
-             
-             /**
-              * 速度の計算
-              */
-             
-             double dt = (timestamp.doubleValue - [timestampsOfAccelaration[timestampsOfAccelaration.count - 2] doubleValue]);
-             
-             // velocity の単位は km/hのため変換
-             velocity = velocity + (vectorSize * 3600 / 1000) * dt;
-             
-             // update speed label
-             self.speedLabel.text = [NSString stringWithFormat:@"%.1f",velocity];
-             
-             
-         }
-         
-         [xAccelerations addObject:@(data.acceleration.x)];
-         [yAccelerations addObject:@(data.acceleration.y)];
-         [zAccelerations addObject:@(data.acceleration.z)];
-         
-     }];
-
+                                             withHandler:accelerometerHandler];
+    
 }
 
 - (void)stopRecording {
@@ -411,7 +445,7 @@
     [UIApplication sharedApplication].idleTimerDisabled = NO;
     
     [audio stop];
-
+    
 }
 
 
@@ -431,9 +465,13 @@
                           xAccelerations,
                           yAccelerations,
                           zAccelerations,
-                          curveFlags];
+                          vectorSizes,
+                          velocities,
+                          curveFlags,
+                          trainStatuses,
+                          ];
         
-        NSDictionary *sectionData = [NSDictionary dictionaryWithObjects:data forKeys:DataKeyLabels()];                
+        NSDictionary *sectionData = [NSDictionary dictionaryWithObjects:data forKeys:DataKeyLabels()];
         
         GyroDataManager *gyroManager = [GyroDataManager defaultManager];
         [gyroManager saveSectionData:sectionData];

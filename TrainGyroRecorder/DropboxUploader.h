@@ -15,7 +15,7 @@
 
 @optional
 
-- (void)dropboxUploader:(DropboxUploader *)uploader didUploadWithFilePath:(NSString *)filePath;
+- (void)dropboxUploader:(DropboxUploader *)uploader didUploadWithFilePath:(NSString *)filePath toDBPath:(NSString *)DBpath;
 - (void)dropboxUploader:(DropboxUploader *)uploader didFailUploadingWithError:(NSError *)error;
 
 

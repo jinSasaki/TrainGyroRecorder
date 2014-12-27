@@ -53,12 +53,13 @@
     
 }
 
-- (void)dropboxUploader:(DropboxUploader *)uploader didUploadWithFilePath:(NSString *)filePath
+- (void)dropboxUploader:(DropboxUploader *)uploader didUploadWithFilePath:(NSString *)filePath toDBPath:(NSString *)DBpath
 {
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-    [self.gyroManager syncedSectionWithIndex:self.selectedRow];
+    [self.gyroManager removeSectionDataWithFilePath:[filePath lastPathComponent]];
     [self.tableView reloadData];
+
 }
 
 - (void)dropboxUploader:(DropboxUploader *)uploader didFailUploadingWithError:(NSError *)error

@@ -25,15 +25,15 @@
     // init config
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     NSArray *config = [ud arrayForKey:KEY_CONFIG];
-    if (!config) {
-        config = @[ @"1.0",     // threshold
+//    if (!config) {
+        config = @[ @"1",       // curvethreshold
                     @"30",      // accelometer frequency (Hz)
                     @"30",      // device motion frequency (Hz)
                    ];
         [ud setObject:config forKey:KEY_CONFIG];
         [ud synchronize];
-    }
-    
+//    }
+
     return YES;
 }
 

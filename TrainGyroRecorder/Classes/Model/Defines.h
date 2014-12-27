@@ -18,9 +18,11 @@
 #define KEY_ACCELARATION_Y  @"ACCELARATION_Y"
 #define KEY_ACCELARATION_Z  @"ACCELARATION_Z"
 
-#define KEY_LOCATION        @"LOCATION"
+#define KEY_VECTOR_SIZE       @"VECTOR_SIZE"
+#define KEY_VELOCITIES        @"VELOCITIES"
 
 #define KEY_CURVE_FLAG        @"CURVE_FLAG"
+#define KEY_TRAIN_STATUS        @"TRAIN_STATUS"
 
 #define KEY_TIMESTAMP_ATTITUDE          @"TIMESTAMP_ATTITUDE"
 #define KEY_TIMESTAMP_ACCELARATION      @"TIMESTAMP_ACCELARATION"
@@ -40,6 +42,8 @@ typedef NS_ENUM (NSInteger ,RecordingStatus){
 typedef NS_ENUM (NSInteger ,TrainStatus){
     TrainStatusStopping     = 0,
     TrainStatusRunning      = 1,
+    TrainStatusAccel        = 2,
+    TrainStatusDecel        = 3,
     TrainStatusError        = 9
 };
 typedef NS_ENUM (NSInteger ,CurveStatus){

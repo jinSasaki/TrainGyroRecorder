@@ -154,7 +154,7 @@ static GyroDataManager *shareInstance = nil;
             
             elements = [NSMutableArray array];
             
-            //            for (NSString *key in sectionData) {
+            
             for (int j=0; j<sectionData.count ; j++) {
                 if ([keys[j] isEqualToString:KEY_NAME]) {
                     continue;
@@ -182,13 +182,11 @@ static GyroDataManager *shareInstance = nil;
     return YES;
 }
 
-- (void)syncedSectionWithIndex:(NSInteger)index
+- (void)syncedSectionWithFilePath:(NSString *)filePath
 {
     
-    [__sections removeObjectAtIndex:index];
-    self.sections = __sections;
     
-    // TODO: delete function
+    [self removeSectionDataWithFilePath:filePath];
     
     
 }

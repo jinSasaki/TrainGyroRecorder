@@ -18,7 +18,7 @@
 
 - (BOOL)saveSectionData:(NSDictionary *)sectionData;
 
-- (void)syncedSectionWithIndex:(NSInteger)index;
+- (void)syncedSectionWithFilePath:(NSString *)filePath;
 
 - (BOOL)removeSectionDataWithFilePath:(NSString *)filePath;
 

@@ -16,7 +16,7 @@
     self.restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
     self.restClient.delegate = self;
  
-    NSString *filename = [section stringByAppendingString:FILE_FORMAT];
+    NSString *filename = section;
     NSString *localDir = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
     NSString *localPath = [localDir stringByAppendingPathComponent:filename];
 
@@ -50,8 +50,8 @@
               from:(NSString *)srcPath metadata:(DBMetadata *)metadata {
     NSLog(@"File uploaded successfully to path: %@", metadata.path);
     
-    if ([self.delegate respondsToSelector:@selector(dropboxUploader:didUploadWithFilePath:)]) {
-        [self.delegate dropboxUploader:self didUploadWithFilePath:metadata.path];
+    if ([self.delegate respondsToSelector:@selector(dropboxUploader:didUploadWithFilePath:toDBPath:)]) {
+        [self.delegate dropboxUploader:self didUploadWithFilePath:srcPath toDBPath:metadata.path];
     }
     
 }

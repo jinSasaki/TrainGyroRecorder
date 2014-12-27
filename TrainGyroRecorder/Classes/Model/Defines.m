@@ -15,6 +15,7 @@ NSString * StringRecordingStatus(RecordingStatus status) {
                               @"",
                               @"",
                               @"",
+                              @"",
                               @"Error"];
     return statusString[status];
 }
@@ -22,7 +23,8 @@ NSString * StringRecordingStatus(RecordingStatus status) {
 NSString *StringTrainStatus(TrainStatus status) {
     NSArray *statusString = @[@"Stopping",
                               @"Running",
-                              @"",
+                              @"Accel!!",
+                              @"Decel..",
                               @"",
                               @"",
                               @"",
@@ -35,6 +37,7 @@ NSString *StringTrainStatus(TrainStatus status) {
 NSString *StringCurveStatus(CurveStatus status) {
     NSArray *statusString = @[@"no Curve",
                               @"Curving!",
+                              @"",
                               @"",
                               @"",
                               @"",
@@ -59,7 +62,11 @@ NSArray *DataKeyLabels() {
                       KEY_ACCELARATION_Y,
                       KEY_ACCELARATION_Z,
                       
+                      KEY_VECTOR_SIZE,
+                      KEY_VELOCITIES,
+                      
                       KEY_CURVE_FLAG,
+                      KEY_TRAIN_STATUS,
                       
                       ];
     return keys;
