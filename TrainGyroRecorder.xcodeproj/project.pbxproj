@@ -31,6 +31,8 @@
 		493261411A25A67E001D9535 /* Defines.m in Sources */ = {isa = PBXBuildFile; fileRef = 493261401A25A67E001D9535 /* Defines.m */; };
 		493261491A25B45B001D9535 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 493261481A25B45B001D9535 /* CoreMotion.framework */; };
 		4932614B1A25B462001D9535 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4932614A1A25B462001D9535 /* MapKit.framework */; };
+		49431CEE1A4BF15C00F7FC2F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49431CED1A4BF15C00F7FC2F /* AVFoundation.framework */; };
+		49431CF01A4BF1D200F7FC2F /* bgm.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 49431CEF1A4BF1D200F7FC2F /* bgm.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +80,8 @@
 		493261401A25A67E001D9535 /* Defines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Defines.m; path = Classes/Model/Defines.m; sourceTree = "<group>"; };
 		493261481A25B45B001D9535 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		4932614A1A25B462001D9535 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		49431CED1A4BF15C00F7FC2F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		49431CEF1A4BF1D200F7FC2F /* bgm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = bgm.mp3; path = "../../../Dropbox-Jin/Dropbox/bgm.mp3"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49431CEE1A4BF15C00F7FC2F /* AVFoundation.framework in Frameworks */,
 				4900ED131A2F12B40004A1E2 /* QuartzCore.framework in Frameworks */,
 				4900ED111A2F12AB0004A1E2 /* Security.framework in Frameworks */,
 				4900ED061A2F127E0004A1E2 /* DropboxSDK.framework in Frameworks */,
@@ -131,6 +136,7 @@
 		493260FD1A258B50001D9535 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				49431CED1A4BF15C00F7FC2F /* AVFoundation.framework */,
 				4900ED121A2F12B40004A1E2 /* QuartzCore.framework */,
 				4900ED101A2F12AB0004A1E2 /* Security.framework */,
 				4932614A1A25B462001D9535 /* MapKit.framework */,
@@ -161,6 +167,7 @@
 				4900ED151A2F1AA80004A1E2 /* DropboxUploader.m */,
 				4932613F1A25A67E001D9535 /* Defines.h */,
 				493261401A25A67E001D9535 /* Defines.m */,
+				49431CEF1A4BF1D200F7FC2F /* bgm.mp3 */,
 				4900ECDB1A2F127D0004A1E2 /* DropboxSDK.framework */,
 				493261161A258B50001D9535 /* Images.xcassets */,
 				493261051A258B50001D9535 /* Supporting Files */,
@@ -246,6 +253,11 @@
 				TargetAttributes = {
 					493260FA1A258B50001D9535 = {
 						DevelopmentTeam = T888KGB3C4;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					4932611B1A258B50001D9535 = {
 						TestTargetID = 493260FA1A258B50001D9535;
@@ -279,6 +291,7 @@
 				493261171A258B50001D9535 /* Images.xcassets in Resources */,
 				493261091A258B50001D9535 /* InfoPlist.strings in Resources */,
 				493261121A258B50001D9535 /* Main.storyboard in Resources */,
+				49431CF01A4BF1D200F7FC2F /* bgm.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,8 +12,10 @@
 
 #import "GyroDataManager.h"
 
+#import <AVFoundation/AVFoundation.h>
+
 @interface AddSectionViewController : UIViewController
-<UITextFieldDelegate>
+<UITextFieldDelegate , UIPickerViewDelegate , UIPickerViewDataSource , UIActionSheetDelegate>
 
 @property (nonatomic ,weak) IBOutlet UITextField *fromStationField;
 @property (nonatomic ,weak) IBOutlet UITextField *toStationField;
@@ -26,6 +28,7 @@
 
 
 @property (nonatomic ,weak) IBOutlet UIButton *switchBtn;
+@property (nonatomic ,weak) IBOutlet UIButton *carNumBtn;
 
 @property CMMotionManager *motionManager;
 
@@ -34,5 +37,6 @@
 
 - (IBAction)didPushDoneBtn:(id)sender;
 
+- (IBAction)didPushCarNumBtn:(id)sender;
 
 @end

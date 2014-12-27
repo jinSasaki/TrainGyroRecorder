@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>EB3BE8B6-F516-4614-922C-6A7A4411CBBC</string>
+	<key>IDESourceControlProjectName</key>
+	<string>TrainGyroRecorder</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>90635DA6-34D8-499B-AD11-734B600B9E89</key>
+		<string>https://github.com/jinSasaki/TrainGyroRecorder.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>TrainGyroRecorder.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>90635DA6-34D8-499B-AD11-734B600B9E89</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/jinSasaki/TrainGyroRecorder.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>90635DA6-34D8-499B-AD11-734B600B9E89</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>90635DA6-34D8-499B-AD11-734B600B9E89</string>
+			<key>IDESourceControlWCCName</key>
+			<string>TrainGyroRecorder</string>
+		</dict>
+	</array>
+</dict>
+</plist>

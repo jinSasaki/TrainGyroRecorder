@@ -19,14 +19,40 @@
                             appSecret:APP_SECRET
                             root:kDBRootDropbox]; // either kDBRootAppFolder or kDBRootDropbox
     [DBSession setSharedSession:dbSession];
-
+    
+    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+    
     return YES;
 }
+
+- (void)remoteControlReceivedWithEvent:(UIEvent *)event
+{
+    if (event.type == UIEventTypeRemoteControl) {
+        switch (event.subtype) {
+            case UIEventSubtypeRemoteControlPlay:
+            case UIEventSubtypeRemoteControlPause:
+            case UIEventSubtypeRemoteControlTogglePlayPause:
+                
+                break;
+            case UIEventSubtypeRemoteControlPreviousTrack:
+                
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    
+    // sleep unlock
+    [UIApplication sharedApplication].idleTimerDisabled = NO;
+
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -43,6 +69,10 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+
+    // sleep lock
+    [UIApplication sharedApplication].idleTimerDisabled = YES;
+
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -62,5 +92,7 @@
     // Add whatever other url handling code your app requires here
     return NO;
 }
+
+
 
 @end

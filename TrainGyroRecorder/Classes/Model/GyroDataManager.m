@@ -14,7 +14,8 @@ static NSMutableArray *__sections;
 
 // singleton
 static GyroDataManager *shareInstance = nil;
-+ (instancetype)defaultManager {
++ (instancetype)defaultManager
+{
     
     if (!shareInstance) {
         shareInstance = [GyroDataManager new];
@@ -22,30 +23,67 @@ static GyroDataManager *shareInstance = nil;
     return shareInstance;
 }
 
--(id)init {
+-(id)init
+{
     self = [super init];
     if (self) {
-        __sections = [NSMutableArray array];
+        
+        // find csv
+        __sections = [self fileNamesInDocumentDirectory];
+        
     }
     
     return self;
 }
 
+- (NSMutableArray *)fileNamesInDocumentDirectory
+{
+    NSString *directoryPath;
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(
+                                                         NSDocumentDirectory,
+                                                         NSUserDomainMask,
+                                                         YES);
+    directoryPath = [paths objectAtIndex:0];
+    
+    NSString *extension = @"csv";
+    
+    NSFileManager *fileManager=[[NSFileManager alloc] init];
+    NSError *error = nil;
+    /* 全てのファイル名 */
+    NSArray *allFileName = [fileManager contentsOfDirectoryAtPath:directoryPath error:&error];
+    if (error) return nil;
+    NSMutableArray *hitFileNames = [[NSMutableArray alloc] init];
+    for (NSString *fileName in allFileName) {
+        /* 拡張子が一致するか */
+        if ([[fileName pathExtension] isEqualToString:extension]) {
+            [hitFileNames addObject:fileName];
+        }
+    }
+    return hitFileNames;
+    
+}
+
+
 #pragma mark - getter
 
-- (NSArray *)sections {
+- (NSArray *)sections
+{
+    __sections = [self fileNamesInDocumentDirectory];
     return __sections;
 }
 
 #pragma mark - setter
 
-- (void)setSections:(NSArray *)sections {
-    sections = __sections;
+- (void)setSections:(NSMutableArray *)sections
+{
+    __sections = sections;
 }
 
 #pragma mark - public methods
 
-- (BOOL)saveSectionData:(NSDictionary *)sectionData {
+- (BOOL)saveSectionData:(NSDictionary *)sectionData
+{
     
     
     [__sections addObject:sectionData[KEY_NAME]];
@@ -97,7 +135,7 @@ static GyroDataManager *shareInstance = nil;
         }
         
         
-
+        
         writeLine = [[elements componentsJoinedByString:@","] stringByAppendingString:@",\n "];
         data = [NSData dataWithBytes:writeLine.UTF8String
                               length:writeLine.length];
@@ -144,7 +182,8 @@ static GyroDataManager *shareInstance = nil;
     return YES;
 }
 
-- (void)syncedSectionWithIndex:(NSInteger)index {
+- (void)syncedSectionWithIndex:(NSInteger)index
+{
     
     [__sections removeObjectAtIndex:index];
     self.sections = __sections;
@@ -154,6 +193,30 @@ static GyroDataManager *shareInstance = nil;
     
 }
 
+- (BOOL)removeSectionDataWithFilePath:(NSString *)filePath
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(
+                                                         NSDocumentDirectory,
+                                                         NSUserDomainMask,
+                                                         YES);
+    NSString *path = [[paths objectAtIndex:0] stringByAppendingPathComponent:filePath];
+    NSFileManager *fileManager = [[NSFileManager alloc] init];
+    NSError *error;
+    [fileManager removeItemAtPath:path error:&error];
+
+    
+    if (error) {
+        NSLog(@"%@",error);
+        return NO;
+    }
+    
+    [__sections removeObject:filePath];
+    
+    self.sections = __sections;
+
+    
+    return YES;
+}
 
 
 @end

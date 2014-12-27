@@ -8,7 +8,9 @@
 
 #import "SectionTableViewController.h"
 
-@interface SectionTableViewController ()
+@interface SectionTableViewController (){
+    AVAudioPlayer *audio;
+}
 @property NSInteger selectedRow;
 
 @end
@@ -24,6 +26,7 @@
     if (![[DBSession sharedSession] isLinked]) {
         [[DBSession sharedSession] linkFromController:self];
     }
+    
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -47,7 +50,7 @@
     self.uploader.delegate = self;
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     [self.uploader uploadSection:self.gyroManager.sections[self.selectedRow]];
-   
+    
 }
 
 - (void)dropboxUploader:(DropboxUploader *)uploader didUploadWithFilePath:(NSString *)filePath
@@ -60,17 +63,17 @@
 
 - (void)dropboxUploader:(DropboxUploader *)uploader didFailUploadingWithError:(NSError *)error
 {
-
+    
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
+    
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Error"
                                                    message:[NSString stringWithFormat:@"%@",error]
                                                   delegate:nil
                                          cancelButtonTitle:@"OK"
                                          otherButtonTitles:nil];
     [alert show];
-
-
+    
+    
 }
 
 - (void)confirmToSync
@@ -83,6 +86,16 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [self.tableView reloadData];
+    
+    
+    [self becomeFirstResponder];
+    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+    NSURL *url = [NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"bgm" ofType:@"mp3"]];
+    audio = [[AVAudioPlayer alloc]initWithContentsOfURL:url error:nil];
+    [audio play];
+    [audio stop];
+    
+    
 }
 
 #pragma mark - Table view data source
@@ -115,53 +128,57 @@
     [self confirmToSync];
 }
 
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
 
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
- {
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source
- [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
- } else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
- }
- }
- */
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
-
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+// Override to support conditional editing of the table view.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Get the new view controller using [segue destinationViewController].
-    //    GyroTableViewController *vc = [segue destinationViewController];
-    //    vc.section =
-    // Pass the selected object to the new view controller.
+    // Return NO if you do not want the specified item to be editable.
+    return YES;
+}
+
+
+
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // Delete the row from the data source
+        if(![self.gyroManager removeSectionDataWithFilePath:self.gyroManager.sections[indexPath.row]]){
+            return;
+        }
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
+        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+    }
+}
+
+- (BOOL)canBecomeFirstResponder
+{
+    return YES;
+}
+
+-(void)viewWillDisappear:(BOOL)animated {
+    
+    [[UIApplication sharedApplication] endReceivingRemoteControlEvents];
+    [self resignFirstResponder];
+    
+    [super viewWillDisappear:animated];
+}
+
+
+- (void)remoteControlReceivedWithEvent:(UIEvent *)event
+{
+    if (event.type == UIEventTypeRemoteControl) {
+        switch (event.subtype) {
+            case UIEventSubtypeRemoteControlPlay:
+            case UIEventSubtypeRemoteControlPause:
+            case UIEventSubtypeRemoteControlTogglePlayPause:
+                [self performSegueWithIdentifier:@"add" sender:self];
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 @end

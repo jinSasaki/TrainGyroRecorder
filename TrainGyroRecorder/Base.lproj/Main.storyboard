@@ -4,7 +4,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
-        <!--Section Table View Controller - Recorded Sections-->
+        <!--Section Table View Controller - 記録データ-->
         <scene sceneID="qNu-vF-ie4">
             <objects>
                 <tableViewController id="qFm-v1-g9q" customClass="SectionTableViewController" sceneMemberID="viewController">
@@ -43,10 +43,10 @@
                             <outlet property="delegate" destination="qFm-v1-g9q" id="cIn-58-eJF"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Recorded Sections" id="nbC-KQ-7uc">
+                    <navigationItem key="navigationItem" title="記録データ" id="nbC-KQ-7uc">
                         <barButtonItem key="rightBarButtonItem" title="追加" systemItem="add" id="6F8-yN-Qrd">
                             <connections>
-                                <segue destination="vXZ-lx-hvc" kind="modal" id="x0c-dc-G7K"/>
+                                <segue destination="vXZ-lx-hvc" kind="modal" identifier="add" id="x0c-dc-G7K"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -83,25 +83,25 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7mK-xA-YCg">
-                                <rect key="frame" x="20" y="147" width="115" height="30"/>
+                                <rect key="frame" x="20" y="147" width="90" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="VSH-iB-M59">
-                                <rect key="frame" x="185" y="147" width="115" height="30"/>
+                                <rect key="frame" x="154" y="147" width="90" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="→" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pPa-GY-XpT">
-                                <rect key="frame" x="143" y="151" width="34" height="21"/>
+                                <rect key="frame" x="114" y="151" width="34" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="  Stations" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OAJ-ia-X9U">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="  Stations                                           Car Num" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OAJ-ia-X9U">
                                 <rect key="frame" x="0.0" y="109" width="320" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.47374499069904197" green="0.77587752254767361" blue="0.91372549020000005" alpha="1" colorSpace="deviceRGB"/>
@@ -169,7 +169,7 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Add Section and Record Gyro Data" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QhA-fW-DB8">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="乗車データを記録する" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QhA-fW-DB8">
                                 <rect key="frame" x="0.0" y="59" width="320" height="42"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.0" green="0.62745098040000002" blue="0.91372549020000005" alpha="1" colorSpace="deviceRGB"/>
@@ -202,10 +202,21 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bOg-Va-13u">
+                                <rect key="frame" x="254" y="147" width="60" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="何両目？">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="didPushCarNumBtn:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="9f2-B7-I9w"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="carNumBtn" destination="bOg-Va-13u" id="vKw-fS-Z8B"/>
                         <outlet property="curveLabel" destination="RrF-j0-VNM" id="tU0-J8-cpK"/>
                         <outlet property="fromStationField" destination="7mK-xA-YCg" id="K0c-lY-jTB"/>
                         <outlet property="speedLabel" destination="eUq-1H-l8w" id="u93-Ux-dgY"/>

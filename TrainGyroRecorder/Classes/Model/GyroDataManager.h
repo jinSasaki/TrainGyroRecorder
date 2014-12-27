@@ -20,4 +20,6 @@
 
 - (void)syncedSectionWithIndex:(NSInteger)index;
 
+- (BOOL)removeSectionDataWithFilePath:(NSString *)filePath;
+
 @end
