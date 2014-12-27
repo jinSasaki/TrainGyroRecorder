@@ -30,6 +30,8 @@
 #define destDir             @"/BandaiLab/data"
 #define FILE_FORMAT         @".csv"
 
+#define KEY_CONFIG         @"CONFIG"
+
 typedef NS_ENUM (NSInteger ,RecordingStatus){
     RecordingStatusPending     = 0,
     RecordingStatusRecording   = 1,

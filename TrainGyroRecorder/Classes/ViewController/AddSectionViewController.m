@@ -15,6 +15,14 @@
     double averageV;
     double velocity;
     
+    // frequency
+    double frequencyAttribute;
+    double frequencyAccelaration;
+    
+    // threshold
+    double threshold;
+
+    
     NSInteger carNum;
     
     // data
@@ -38,10 +46,7 @@
     NSMutableArray *curveFlags;
     
     NSString *name;
-    
-    NSString *stringBuffer;
-    CLLocation *location;
-    
+
     AVAudioPlayer *audio;
     
     UIActionSheet *actionSheet;
@@ -49,23 +54,21 @@
 
 @property (nonatomic) BOOL isCurving;
 
-@property NSData *buffer;
-@property NSOutputStream *stream;
-
 @end
 
 @implementation AddSectionViewController
 
-// frequency
-const double frequencyAttribute        = 30; // Hz
-const double frequencyAccelaration     = 30; // Hz
-
-// threshold
-const double threshold = 0.4;
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // get config
+    NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+    NSArray *config = [ud arrayForKey:KEY_CONFIG];
+    
+    threshold = [config[0] doubleValue];
+    frequencyAccelaration = [config[1] doubleValue];
+    frequencyAttribute = [config[2] doubleValue];
     
     // make circle buttons
     self.switchBtn.layer.cornerRadius = self.switchBtn.frame.size.height /2;
@@ -128,12 +131,9 @@ const double threshold = 0.4;
             case UIEventSubtypeRemoteControlTogglePlayPause:
                 if (self.toStationField.text.length == 0) {
                     
-                    self.fromStationField.text = @"remote";
+                    self.fromStationField.text = @"Remote";
+                    self.toStationField.text = @" ";
                     carNum = 100;
-                    
-                    NSDateFormatter *df = [NSDateFormatter new];
-                    df.dateFormat = @"yyyyMMdd_HHmm";
-                    self.toStationField.text = [df stringFromDate:[NSDate date]];
                 }
                 [self didPushSwitchBtn:nil];
                 
@@ -143,6 +143,8 @@ const double threshold = 0.4;
                 
                 break;
             case UIEventSubtypeRemoteControlPreviousTrack:
+            case UIEventSubtypeRemoteControlNextTrack:
+                NSLog(@"prev");
                 
                 break;
             default:
@@ -233,44 +235,34 @@ const double threshold = 0.4;
     
     if (self.motionManager.deviceMotionActive || self.motionManager.accelerometerActive) {
         
-        // Stop--------------------------------
-        
         self.switchBtn.layer.borderColor = [UIColor greenColor].CGColor;
         [self.switchBtn setTitle:@"Start" forState:UIControlStateNormal];
         [self.switchBtn setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
-        
-        // stop motion updates
-        [self.motionManager stopDeviceMotionUpdates];
-        [self.motionManager stopAccelerometerUpdates];
-        
-        // update status Label
-        self.statusLabel.text = @"Pending";
-        
-        // sleep unlock
-        [UIApplication sharedApplication].idleTimerDisabled = NO;
-        
-        [audio stop];
+
+        [self stopRecording];
         
         return;
     }
-    
-    
-    [audio play];
-    
-    // Start--------------------------------
-    
-    
     
     [self.switchBtn setTitle:@"Stop" forState:UIControlStateNormal];
     [self.switchBtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
     self.switchBtn.layer.borderColor = [UIColor redColor].CGColor;
     
     
-    
     [self prepareForRecording];
     
+    [self startRecording];
     
-    name = [NSString stringWithFormat:@"%@ → %@", self.fromStationField.text,self.toStationField.text];
+}
+
+- (void)startRecording {
+    
+    [audio play];
+
+    // create file name
+    NSDateFormatter *df = [NSDateFormatter new];
+    df.dateFormat = @"MMddHHmmss";
+    name = [NSString stringWithFormat:@"%@_%@-%@", [df stringFromDate:[NSDate date]],self.fromStationField.text,self.toStationField.text];
     
     // update status Label
     self.statusLabel.text = @"Recording";
@@ -282,15 +274,20 @@ const double threshold = 0.4;
                                             withHandler:^(CMDeviceMotion *motion, NSError *error)
      {
          
+         // add attitude data
          [pitchs addObject:@(motion.attitude.pitch)];
          [rolls addObject:@(motion.attitude.roll)];
          [yaws addObject:@(motion.attitude.yaw)];
+         
+         // add timestamp
          NSString * timestamp = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];
          [timestampsOfAttitude addObject:timestamp];
-         
+
+         // update time label
          self.timeLabel.text = [NSString stringWithFormat:@"%.2f",-[startDate timeIntervalSinceNow]];
          
-         
+
+         // detect curve
          if (timestampsOfAttitude.count >= 2) {
              
              double dt = (timestamp.doubleValue - [timestampsOfAttitude[timestampsOfAttitude.count-2] doubleValue]);
@@ -307,8 +304,6 @@ const double threshold = 0.4;
                  self.curveLabel.text = StringCurveStatus(CurveStatusNoCurve);
              }
              
-             NSLog(@"%.2f",gradient);
-             
          }
          
          [curveFlags addObject:@(self.isCurving)];
@@ -316,15 +311,17 @@ const double threshold = 0.4;
      }];
     
     
-    
+    // start accelerometer
     [self.motionManager startAccelerometerUpdatesToQueue:[NSOperationQueue currentQueue]
                                              withHandler:^(CMAccelerometerData *data, NSError *error)
      {
-         
+
+         // add timestamp
          NSString * timestamp = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];
          [timestampsOfAccelaration addObject:timestamp];
          
-         
+
+         // calc velocity
          if (timestampsOfAccelaration.count > 1) {
              
              /**
@@ -340,13 +337,12 @@ const double threshold = 0.4;
              double gy = data.acceleration.y * alpha + [yAccelerations[yAccelerations.count - 1] doubleValue] * (1.0 - alpha);
              double gz = data.acceleration.z * alpha + [zAccelerations[zAccelerations.count - 1] doubleValue] * (1.0 - alpha);
              
-             
-             
              // 重力成分を省いた加速度
              double ax = data.acceleration.x - gx;
              double ay = data.acceleration.y - gy;
              double az = data.acceleration.z - gz;
              
+             // 単位をm/sに
              ax *= 10;
              ay *= 10;
              az *= 10;
@@ -367,6 +363,10 @@ const double threshold = 0.4;
                  if (ay < 0.0) {
                      vectorSize *= -1;
                  }
+                 
+                 // TODO: 正面向いてる前提
+                 vectorSize = ay;
+
                  [vectorSizes addObject:@(vectorSize)];
              }
              
@@ -381,19 +381,11 @@ const double threshold = 0.4;
              
              double dt = (timestamp.doubleValue - [timestampsOfAccelaration[timestampsOfAccelaration.count - 2] doubleValue]);
              
-             velocity = velocity + vectorSize * dt;
-             NSLog(@"%f",velocity);
-             
-             //                 // 正面を向いている仮定
-             //                 averageV = (averageV * (yAccelerations.count) + data.acceleration.y) / yAccelerations.count;
-             //                 double revision = data.acceleration.y - averageV;
-             //                 if (revision < 0.0 ) {
-             //                     revision = data.acceleration.y;
-             //                 }
-             //                 velocity = velocity + revision * dt * 10;
+             // velocity の単位は km/hのため変換
+             velocity = velocity + (vectorSize * 3600 / 1000) * dt;
              
              // update speed label
-             self.speedLabel.text = [NSString stringWithFormat:@"%.2f",velocity];
+             self.speedLabel.text = [NSString stringWithFormat:@"%.1f",velocity];
              
              
          }
@@ -402,9 +394,24 @@ const double threshold = 0.4;
          [yAccelerations addObject:@(data.acceleration.y)];
          [zAccelerations addObject:@(data.acceleration.z)];
          
-         
      }];
+
+}
+
+- (void)stopRecording {
     
+    // stop motion updates
+    [self.motionManager stopDeviceMotionUpdates];
+    [self.motionManager stopAccelerometerUpdates];
+    
+    // update status Label
+    self.statusLabel.text = @"Pending";
+    
+    // sleep unlock
+    [UIApplication sharedApplication].idleTimerDisabled = NO;
+    
+    [audio stop];
+
 }
 
 
@@ -415,20 +422,18 @@ const double threshold = 0.4;
         
         name = [NSString stringWithFormat:@"%@_car%ld",name,carNum];
         
-        NSDictionary *sectionData = @{KEY_NAME                      : name,
-                                      KEY_TIMESTAMP_ATTITUDE        : timestampsOfAttitude,
-                                      KEY_ATTITUDE_PITCH            : pitchs,
-                                      KEY_ATTITUDE_ROLL             : rolls,
-                                      KEY_ATTITUDE_YAW              : yaws,
-                                      
-                                      KEY_TIMESTAMP_ACCELARATION    : timestampsOfAccelaration,
-                                      KEY_ACCELARATION_X            : xAccelerations,
-                                      KEY_ACCELARATION_Y            : yAccelerations,
-                                      KEY_ACCELARATION_Z            : zAccelerations,
-                                      
-                                      KEY_CURVE_FLAG                : curveFlags
-                                      };
+        NSArray *data = @[name,
+                          timestampsOfAttitude,
+                          pitchs,
+                          rolls,
+                          yaws,
+                          timestampsOfAccelaration,
+                          xAccelerations,
+                          yAccelerations,
+                          zAccelerations,
+                          curveFlags];
         
+        NSDictionary *sectionData = [NSDictionary dictionaryWithObjects:data forKeys:DataKeyLabels()];                
         
         GyroDataManager *gyroManager = [GyroDataManager defaultManager];
         [gyroManager saveSectionData:sectionData];

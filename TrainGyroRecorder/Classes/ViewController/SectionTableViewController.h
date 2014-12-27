@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "GyroDataManager.h"
-#import "GyroTableViewController.h"
+
 #import "DropboxUploader.h"
 #import <AVFoundation/AVFoundation.h>
 

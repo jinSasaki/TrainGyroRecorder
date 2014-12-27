@@ -33,6 +33,7 @@
 		4932614B1A25B462001D9535 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4932614A1A25B462001D9535 /* MapKit.framework */; };
 		49431CEE1A4BF15C00F7FC2F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49431CED1A4BF15C00F7FC2F /* AVFoundation.framework */; };
 		49431CF01A4BF1D200F7FC2F /* bgm.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 49431CEF1A4BF1D200F7FC2F /* bgm.mp3 */; };
+		495023C61A4E9FC60065D246 /* ConfigViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 495023C51A4E9FC60065D246 /* ConfigViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +83,8 @@
 		4932614A1A25B462001D9535 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		49431CED1A4BF15C00F7FC2F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		49431CEF1A4BF1D200F7FC2F /* bgm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = bgm.mp3; path = "../../../Dropbox-Jin/Dropbox/bgm.mp3"; sourceTree = "<group>"; };
+		495023C41A4E9FC60065D246 /* ConfigViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConfigViewController.h; path = Classes/ViewController/ConfigViewController.h; sourceTree = "<group>"; };
+		495023C51A4E9FC60065D246 /* ConfigViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ConfigViewController.m; path = Classes/ViewController/ConfigViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +160,8 @@
 				493261101A258B50001D9535 /* Main.storyboard */,
 				493261131A258B50001D9535 /* ViewController.h */,
 				493261141A258B50001D9535 /* ViewController.m */,
+				495023C41A4E9FC60065D246 /* ConfigViewController.h */,
+				495023C51A4E9FC60065D246 /* ConfigViewController.m */,
 				493261331A25980A001D9535 /* AddSectionViewController.h */,
 				493261341A25980A001D9535 /* AddSectionViewController.m */,
 				4932613C1A25A5D9001D9535 /* SectionTableViewController.h */,
@@ -311,6 +316,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				493261151A258B50001D9535 /* ViewController.m in Sources */,
+				495023C61A4E9FC60065D246 /* ConfigViewController.m in Sources */,
 				4932610F1A258B50001D9535 /* AppDelegate.m in Sources */,
 				4900ED161A2F1AA80004A1E2 /* DropboxUploader.m in Sources */,
 				493261381A259E76001D9535 /* GyroDataManager.m in Sources */,
