@@ -159,7 +159,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="97"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="F7d-pa-a7Z">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="F7d-pa-a7Z">
                                                     <rect key="frame" x="97" y="47" width="170" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -182,7 +182,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="97"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wEb-8g-xSI">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wEb-8g-xSI">
                                                     <rect key="frame" x="97" y="47" width="170" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -211,8 +211,6 @@
                         <outletCollection property="textfields" destination="Yh0-Fz-uIY" id="NkJ-fg-lO7"/>
                         <outletCollection property="textfields" destination="ueU-Rb-g08" id="2p7-zv-xJ0"/>
                         <outletCollection property="textfields" destination="x7k-1I-BWg" id="LqA-NM-kR4"/>
-                        <outletCollection property="textfields" destination="F7d-pa-a7Z" id="6Ky-rL-w6z"/>
-                        <outletCollection property="textfields" destination="wEb-8g-xSI" id="EJZ-gV-XbN"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qHh-jb-Tiu" userLabel="First Responder" sceneMemberID="firstResponder"/>

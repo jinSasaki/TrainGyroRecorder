@@ -21,7 +21,7 @@
     
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     NSArray *config = [ud arrayForKey:KEY_CONFIG];
-    for (int i=0; i<config.count; i++) {
+    for (int i=0; i<textfields.count; i++) {
         UITextField *tf = textfields[i];
         tf.text = config[i];
         tf.delegate = self;
@@ -38,7 +38,7 @@
 
     NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
     NSMutableArray *config = [NSMutableArray array];
-    for (int i=0; i<config.count; i++) {
+    for (int i=0; i<textfields.count; i++) {
         UITextField *tf = textfields[i];
         [config addObject:tf.text];
     }
