@@ -10,7 +10,12 @@
 		4900ED061A2F127E0004A1E2 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4900ECDB1A2F127D0004A1E2 /* DropboxSDK.framework */; };
 		4900ED111A2F12AB0004A1E2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4900ED101A2F12AB0004A1E2 /* Security.framework */; };
 		4900ED131A2F12B40004A1E2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4900ED121A2F12B40004A1E2 /* QuartzCore.framework */; };
-		4900ED161A2F1AA80004A1E2 /* DropboxUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 4900ED151A2F1AA80004A1E2 /* DropboxUploader.m */; };
+		4915D0FC1A4ECA5500554480 /* Defines.m in Sources */ = {isa = PBXBuildFile; fileRef = 4915D0F01A4ECA5500554480 /* Defines.m */; };
+		4915D0FD1A4ECA5500554480 /* DropboxUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 4915D0F21A4ECA5500554480 /* DropboxUploader.m */; };
+		4915D0FE1A4ECA5500554480 /* GyroDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4915D0F41A4ECA5500554480 /* GyroDataManager.m */; };
+		4915D0FF1A4ECA5500554480 /* AddSectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4915D0F71A4ECA5500554480 /* AddSectionViewController.m */; };
+		4915D1001A4ECA5500554480 /* ConfigViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4915D0F91A4ECA5500554480 /* ConfigViewController.m */; };
+		4915D1011A4ECA5500554480 /* SectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4915D0FB1A4ECA5500554480 /* SectionTableViewController.m */; };
 		493260FF1A258B50001D9535 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 493260FE1A258B50001D9535 /* Foundation.framework */; };
 		493261011A258B50001D9535 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 493261001A258B50001D9535 /* CoreGraphics.framework */; };
 		493261031A258B50001D9535 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 493261021A258B50001D9535 /* UIKit.framework */; };
@@ -18,22 +23,16 @@
 		4932610B1A258B50001D9535 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4932610A1A258B50001D9535 /* main.m */; };
 		4932610F1A258B50001D9535 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4932610E1A258B50001D9535 /* AppDelegate.m */; };
 		493261121A258B50001D9535 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 493261101A258B50001D9535 /* Main.storyboard */; };
-		493261151A258B50001D9535 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 493261141A258B50001D9535 /* ViewController.m */; };
 		493261171A258B50001D9535 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 493261161A258B50001D9535 /* Images.xcassets */; };
 		4932611E1A258B50001D9535 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4932611D1A258B50001D9535 /* XCTest.framework */; };
 		4932611F1A258B50001D9535 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 493260FE1A258B50001D9535 /* Foundation.framework */; };
 		493261201A258B50001D9535 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 493261021A258B50001D9535 /* UIKit.framework */; };
 		493261281A258B50001D9535 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 493261261A258B50001D9535 /* InfoPlist.strings */; };
 		4932612A1A258B50001D9535 /* TrainGyroRecorderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 493261291A258B50001D9535 /* TrainGyroRecorderTests.m */; };
-		493261351A25980A001D9535 /* AddSectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 493261341A25980A001D9535 /* AddSectionViewController.m */; };
-		493261381A259E76001D9535 /* GyroDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 493261371A259E76001D9535 /* GyroDataManager.m */; };
-		4932613E1A25A5D9001D9535 /* SectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4932613D1A25A5D9001D9535 /* SectionTableViewController.m */; };
-		493261411A25A67E001D9535 /* Defines.m in Sources */ = {isa = PBXBuildFile; fileRef = 493261401A25A67E001D9535 /* Defines.m */; };
 		493261491A25B45B001D9535 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 493261481A25B45B001D9535 /* CoreMotion.framework */; };
 		4932614B1A25B462001D9535 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4932614A1A25B462001D9535 /* MapKit.framework */; };
 		49431CEE1A4BF15C00F7FC2F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49431CED1A4BF15C00F7FC2F /* AVFoundation.framework */; };
 		49431CF01A4BF1D200F7FC2F /* bgm.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 49431CEF1A4BF1D200F7FC2F /* bgm.mp3 */; };
-		495023C61A4E9FC60065D246 /* ConfigViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 495023C51A4E9FC60065D246 /* ConfigViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,11 +46,21 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4900ECDB1A2F127D0004A1E2 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DropboxSDK.framework; sourceTree = "<group>"; };
+		4900ECDB1A2F127D0004A1E2 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DropboxSDK.framework; path = TrainGyroRecorder/DropboxSDK.framework; sourceTree = "<group>"; };
 		4900ED101A2F12AB0004A1E2 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		4900ED121A2F12B40004A1E2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		4900ED141A2F1AA80004A1E2 /* DropboxUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropboxUploader.h; sourceTree = "<group>"; };
-		4900ED151A2F1AA80004A1E2 /* DropboxUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropboxUploader.m; sourceTree = "<group>"; };
+		4915D0EF1A4ECA5500554480 /* Defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Defines.h; sourceTree = "<group>"; };
+		4915D0F01A4ECA5500554480 /* Defines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Defines.m; sourceTree = "<group>"; };
+		4915D0F11A4ECA5500554480 /* DropboxUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropboxUploader.h; sourceTree = "<group>"; };
+		4915D0F21A4ECA5500554480 /* DropboxUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropboxUploader.m; sourceTree = "<group>"; };
+		4915D0F31A4ECA5500554480 /* GyroDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GyroDataManager.h; sourceTree = "<group>"; };
+		4915D0F41A4ECA5500554480 /* GyroDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GyroDataManager.m; sourceTree = "<group>"; };
+		4915D0F61A4ECA5500554480 /* AddSectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddSectionViewController.h; sourceTree = "<group>"; };
+		4915D0F71A4ECA5500554480 /* AddSectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddSectionViewController.m; sourceTree = "<group>"; };
+		4915D0F81A4ECA5500554480 /* ConfigViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigViewController.h; sourceTree = "<group>"; };
+		4915D0F91A4ECA5500554480 /* ConfigViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigViewController.m; sourceTree = "<group>"; };
+		4915D0FA1A4ECA5500554480 /* SectionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SectionTableViewController.h; sourceTree = "<group>"; };
+		4915D0FB1A4ECA5500554480 /* SectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SectionTableViewController.m; sourceTree = "<group>"; };
 		493260FB1A258B50001D9535 /* TrainGyroRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrainGyroRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		493260FE1A258B50001D9535 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		493261001A258B50001D9535 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -63,28 +72,16 @@
 		4932610D1A258B50001D9535 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		4932610E1A258B50001D9535 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		493261111A258B50001D9535 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		493261131A258B50001D9535 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		493261141A258B50001D9535 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		493261161A258B50001D9535 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		4932611C1A258B50001D9535 /* TrainGyroRecorderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrainGyroRecorderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4932611D1A258B50001D9535 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		493261251A258B50001D9535 /* TrainGyroRecorderTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TrainGyroRecorderTests-Info.plist"; sourceTree = "<group>"; };
 		493261271A258B50001D9535 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		493261291A258B50001D9535 /* TrainGyroRecorderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrainGyroRecorderTests.m; sourceTree = "<group>"; };
-		493261331A25980A001D9535 /* AddSectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddSectionViewController.h; path = Classes/ViewController/AddSectionViewController.h; sourceTree = "<group>"; };
-		493261341A25980A001D9535 /* AddSectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AddSectionViewController.m; path = Classes/ViewController/AddSectionViewController.m; sourceTree = "<group>"; };
-		493261361A259E76001D9535 /* GyroDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GyroDataManager.h; path = Classes/Model/GyroDataManager.h; sourceTree = "<group>"; };
-		493261371A259E76001D9535 /* GyroDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GyroDataManager.m; path = Classes/Model/GyroDataManager.m; sourceTree = "<group>"; };
-		4932613C1A25A5D9001D9535 /* SectionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SectionTableViewController.h; path = Classes/ViewController/SectionTableViewController.h; sourceTree = "<group>"; };
-		4932613D1A25A5D9001D9535 /* SectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SectionTableViewController.m; path = Classes/ViewController/SectionTableViewController.m; sourceTree = "<group>"; };
-		4932613F1A25A67E001D9535 /* Defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Defines.h; path = Classes/Model/Defines.h; sourceTree = "<group>"; };
-		493261401A25A67E001D9535 /* Defines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Defines.m; path = Classes/Model/Defines.m; sourceTree = "<group>"; };
 		493261481A25B45B001D9535 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		4932614A1A25B462001D9535 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		49431CED1A4BF15C00F7FC2F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		49431CEF1A4BF1D200F7FC2F /* bgm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = bgm.mp3; path = "../../../Dropbox-Jin/Dropbox/bgm.mp3"; sourceTree = "<group>"; };
-		495023C41A4E9FC60065D246 /* ConfigViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConfigViewController.h; path = Classes/ViewController/ConfigViewController.h; sourceTree = "<group>"; };
-		495023C51A4E9FC60065D246 /* ConfigViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ConfigViewController.m; path = Classes/ViewController/ConfigViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +114,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4915D0ED1A4ECA5500554480 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				4915D0EE1A4ECA5500554480 /* Model */,
+				4915D0F51A4ECA5500554480 /* ViewController */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		4915D0EE1A4ECA5500554480 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4915D0EF1A4ECA5500554480 /* Defines.h */,
+				4915D0F01A4ECA5500554480 /* Defines.m */,
+				4915D0F11A4ECA5500554480 /* DropboxUploader.h */,
+				4915D0F21A4ECA5500554480 /* DropboxUploader.m */,
+				4915D0F31A4ECA5500554480 /* GyroDataManager.h */,
+				4915D0F41A4ECA5500554480 /* GyroDataManager.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		4915D0F51A4ECA5500554480 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				4915D0F61A4ECA5500554480 /* AddSectionViewController.h */,
+				4915D0F71A4ECA5500554480 /* AddSectionViewController.m */,
+				4915D0F81A4ECA5500554480 /* ConfigViewController.h */,
+				4915D0F91A4ECA5500554480 /* ConfigViewController.m */,
+				4915D0FA1A4ECA5500554480 /* SectionTableViewController.h */,
+				4915D0FB1A4ECA5500554480 /* SectionTableViewController.m */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
 		493260F21A258B50001D9535 = {
 			isa = PBXGroup;
 			children = (
@@ -139,6 +171,7 @@
 		493260FD1A258B50001D9535 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4900ECDB1A2F127D0004A1E2 /* DropboxSDK.framework */,
 				49431CED1A4BF15C00F7FC2F /* AVFoundation.framework */,
 				4900ED121A2F12B40004A1E2 /* QuartzCore.framework */,
 				4900ED101A2F12AB0004A1E2 /* Security.framework */,
@@ -158,22 +191,7 @@
 				4932610D1A258B50001D9535 /* AppDelegate.h */,
 				4932610E1A258B50001D9535 /* AppDelegate.m */,
 				493261101A258B50001D9535 /* Main.storyboard */,
-				493261131A258B50001D9535 /* ViewController.h */,
-				493261141A258B50001D9535 /* ViewController.m */,
-				495023C41A4E9FC60065D246 /* ConfigViewController.h */,
-				495023C51A4E9FC60065D246 /* ConfigViewController.m */,
-				493261331A25980A001D9535 /* AddSectionViewController.h */,
-				493261341A25980A001D9535 /* AddSectionViewController.m */,
-				4932613C1A25A5D9001D9535 /* SectionTableViewController.h */,
-				4932613D1A25A5D9001D9535 /* SectionTableViewController.m */,
-				493261361A259E76001D9535 /* GyroDataManager.h */,
-				493261371A259E76001D9535 /* GyroDataManager.m */,
-				4900ED141A2F1AA80004A1E2 /* DropboxUploader.h */,
-				4900ED151A2F1AA80004A1E2 /* DropboxUploader.m */,
-				4932613F1A25A67E001D9535 /* Defines.h */,
-				493261401A25A67E001D9535 /* Defines.m */,
-				49431CEF1A4BF1D200F7FC2F /* bgm.mp3 */,
-				4900ECDB1A2F127D0004A1E2 /* DropboxSDK.framework */,
+				4915D0ED1A4ECA5500554480 /* Classes */,
 				493261161A258B50001D9535 /* Images.xcassets */,
 				493261051A258B50001D9535 /* Supporting Files */,
 			);
@@ -183,6 +201,7 @@
 		493261051A258B50001D9535 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				49431CEF1A4BF1D200F7FC2F /* bgm.mp3 */,
 				493261061A258B50001D9535 /* TrainGyroRecorder-Info.plist */,
 				493261071A258B50001D9535 /* InfoPlist.strings */,
 				4932610A1A258B50001D9535 /* main.m */,
@@ -315,15 +334,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				493261151A258B50001D9535 /* ViewController.m in Sources */,
-				495023C61A4E9FC60065D246 /* ConfigViewController.m in Sources */,
 				4932610F1A258B50001D9535 /* AppDelegate.m in Sources */,
-				4900ED161A2F1AA80004A1E2 /* DropboxUploader.m in Sources */,
-				493261381A259E76001D9535 /* GyroDataManager.m in Sources */,
-				4932613E1A25A5D9001D9535 /* SectionTableViewController.m in Sources */,
-				493261351A25980A001D9535 /* AddSectionViewController.m in Sources */,
 				4932610B1A258B50001D9535 /* main.m in Sources */,
-				493261411A25A67E001D9535 /* Defines.m in Sources */,
+				4915D0FD1A4ECA5500554480 /* DropboxUploader.m in Sources */,
+				4915D1011A4ECA5500554480 /* SectionTableViewController.m in Sources */,
+				4915D0FE1A4ECA5500554480 /* GyroDataManager.m in Sources */,
+				4915D0FF1A4ECA5500554480 /* AddSectionViewController.m in Sources */,
+				4915D1001A4ECA5500554480 /* ConfigViewController.m in Sources */,
+				4915D0FC1A4ECA5500554480 /* Defines.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
