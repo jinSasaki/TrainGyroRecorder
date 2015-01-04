@@ -203,6 +203,10 @@
     vectorSizes = [NSMutableArray array];
     velocities = [NSMutableArray array];
     
+    // sleep lock
+    [UIApplication sharedApplication].idleTimerDisabled = YES;
+
+    
 }
 
 - (BOOL)validateInputValue {
@@ -454,7 +458,7 @@
     if ([self validateInputValue] && timestampsOfAttitude.count > 0) {
         // add Recoreded Data
         
-        name = [NSString stringWithFormat:@"%@_car%ld",name,carNum];
+        name = [NSString stringWithFormat:@"%@_car%d",name,carNum];
         
         NSArray *data = @[name,
                           timestampsOfAttitude,
@@ -524,7 +528,7 @@
 - (void)doneDidPush {
     /* 処理 */
     
-    [self.carNumBtn setTitle:[NSString stringWithFormat:@"%ld両目",carNum] forState:UIControlStateNormal];
+    [self.carNumBtn setTitle:[NSString stringWithFormat:@"%d両目",carNum] forState:UIControlStateNormal];
     // アクションシートの非表示
     [actionSheet dismissWithClickedButtonIndex:0 animated:YES];
 }

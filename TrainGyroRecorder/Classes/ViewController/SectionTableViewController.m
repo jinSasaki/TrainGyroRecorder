@@ -26,7 +26,10 @@
     if (![[DBSession sharedSession] isLinked]) {
         [[DBSession sharedSession] linkFromController:self];
     }
-    
+
+    // sleep lock
+    [UIApplication sharedApplication].idleTimerDisabled = YES;
+
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -42,6 +45,7 @@
             
             break;
     }
+    
 }
 
 - (void)syncToDropbox
